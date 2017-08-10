@@ -6,7 +6,7 @@ const Shelf = (props) => {
 
   const currentShelf = props.books.map((book) =>
     <li key={book.id}>
-      <Book bookData={book} />
+      <Book bookData={book} updateShelf={props.updateShelf} />
     </li>
   );
   return (

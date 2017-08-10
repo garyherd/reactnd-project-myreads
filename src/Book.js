@@ -9,12 +9,16 @@ const Book = (props) => {
     backgroundImage: `url(${props.bookData.imageLinks.thumbnail})`
   }
 
+  const handleOnChange = (event) => {
+    props.updateShelf(props.bookData, event.target.value);
+  }
+
   return (
     <div className="book">
       <div className="book-top">
         <div className="book-cover" style={coverStyle}></div>
         <div className="book-shelf-changer">
-          <select>
+          <select value={props.bookData.shelf} onChange={handleOnChange}>
             <option value="none" disabled>Move to...</option>
             <option value="currentlyReading">Currently Reading</option>
             <option value="wantToRead">Want to Read</option>

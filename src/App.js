@@ -8,14 +8,21 @@ import Book from './Book';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {bookShelfBooks: []}
+    this.state = {bookShelfBooks: [], currentlyReading: [], read: [], wantToRead: []}
+    this.handleUpdateShelf = this.handleUpdateShelf.bind(this);
   }
 
 
   componentDidMount() {
     BooksAPI.getAll().then(vals => {
       this.setState({bookShelfBooks: vals});
-    })
+    });
+  }
+
+  handleUpdateShelf(book, newShelf) {
+    BooksAPI.update(book, newShelf)
+      .then(vals => BooksAPI.getAll())
+      .then(vals => this.setState({bookShelfBooks: vals}));
   }
 
   render() {
@@ -33,9 +40,9 @@ class App extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <Shelf books={currentlyReading} title="Currently Reading"/>
-                <Shelf books={wantToRead} title="Want to Read"/>
-                <Shelf books={read} title="Read"/>
+                <Shelf books={currentlyReading} title="Currently Reading" updateShelf={this.handleUpdateShelf}/>
+                <Shelf books={wantToRead} title="Want to Read" updateShelf={this.handleUpdateShelf}/>
+                <Shelf books={read} title="Read" updateShelf={this.handleUpdateShelf}/>
               </div>
             </div>
             <div className="open-search">
