@@ -29,7 +29,6 @@ class App extends Component {
   }
 
   findBooks = query => {
-    console.log(`new query: ${query}`);
     BooksAPI.search(query, 50)
       .then(vals => this.setState({foundBooks: vals}))
   }
