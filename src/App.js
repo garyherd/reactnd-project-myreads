@@ -20,7 +20,6 @@ class App extends Component {
     BooksAPI.getAll().then(vals => {
       this.setState({bookShelfBooks: vals});
     });
-    //this.setState({foundBooks: []});
   }
 
   handleUpdateShelf = (book, newShelf) => {
@@ -29,7 +28,8 @@ class App extends Component {
       .then(vals => this.setState({bookShelfBooks: vals}));
   }
 
-  findBooks = query => { 
+  findBooks = query => {
+    console.log(`new query: ${query}`);
     BooksAPI.search(query, 50)
       .then(vals => this.setState({foundBooks: vals}))
   }

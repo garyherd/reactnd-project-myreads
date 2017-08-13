@@ -29,15 +29,19 @@ class SearchBooks extends Component {
 
   render() {
 
+    const {foundBooks, updateShelf} = this.props;
+
+    const foundBooksHasError = books => books.error ? true : false;
+
     const booksFound = books => books.map((book) => (
       <li key={book.id}>
-        <Book bookData={book} updateShelf={this.props.updateShelf} />
+        <Book bookData={book} updateShelf={updateShelf} />
       </li>
     ))
 
     const noBooksFound = (<li>No books found. Please try again</li>);
 
-    let displayBooks = this.props.foundBooks ? booksFound(this.props.foundBooks) : noBooksFound;
+    let displayBooks = !foundBooksHasError(foundBooks) ? booksFound(foundBooks) : noBooksFound;
 
     return (
       <div className="search-books">
