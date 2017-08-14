@@ -25,6 +25,7 @@ class App extends Component {
     BooksAPI.getAll().then(vals => {
       this.setState({bookShelfBooks: vals});
     });
+    this.setState({foundBooks: []});
   }
 
   /* All calls to, and responses from, the BooksAPI are handled in
