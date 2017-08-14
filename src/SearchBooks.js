@@ -31,13 +31,13 @@ class SearchBooks extends Component {
 
     const {foundBooks, updateShelf} = this.props;
 
-    const foundBooksHasError = books => books.hasOwnProperty('error') ? true : false;
-    const foundBooksIsEmpty = books => books.length === 0 ? true : false;
+    const foundBooksHasError = foundBooks.hasOwnProperty('error') ? true : false;
+    const foundBooksIsEmpty = foundBooks.length === 0 ? true : false;
     let queryIsEmptyStr = this.state.query === "" ? true : false;
 
     // covers if response object has an error key, meaning no found books; or foundsBooks prop is empty; 
     // or the input field is blank
-    const booksUnavailableForDisplay = books => foundBooksHasError(books) || foundBooksIsEmpty(books) || queryIsEmptyStr;
+    const booksUnavailableForDisplay = foundBooksHasError || foundBooksIsEmpty || queryIsEmptyStr;
 
     const booksFound = books => books.map((book) => (
       <li key={book.id}>
@@ -47,7 +47,7 @@ class SearchBooks extends Component {
 
     const noBooksFound = (<li>No books found. Please try again</li>);
 
-    let displayBooks = !booksUnavailableForDisplay(foundBooks) ? booksFound(foundBooks) : noBooksFound;
+    let displayBooks = !booksUnavailableForDisplay ? booksFound(foundBooks) : noBooksFound;
 
     return (
       <div className="search-books">
