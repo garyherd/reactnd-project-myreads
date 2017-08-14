@@ -1,6 +1,5 @@
 import React from 'react';
 import Book from './Book';
-import './App.css';
 
 const Shelf = (props) => {
 /* No state or event handlers needed, so using a function component */
