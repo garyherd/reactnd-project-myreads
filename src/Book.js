@@ -17,6 +17,7 @@ class Book extends Component {
 
     const book = this.props.bookData;
 
+    //Returns empty string if there's no URL provided in the data object
     const backgroundImgStr = book.imageLinks ? `url(${ this.props.bookData.imageLinks.thumbnail })` : '';
 
     const coverStyle = {
@@ -24,8 +25,8 @@ class Book extends Component {
       height: 193,
       backgroundImage: backgroundImgStr
     }
-
     
+    // Return emppy string if there are no authors provides in data object
     const authors = book.authors ? book.authors.join() : '';
 
     return (
