@@ -25,10 +25,14 @@ class SearchBooks extends Component {
     }
   }
 
+  updateFoundBooksWithShelfStatus = () => {
+
+  }
+
 
   render() {
 
-    const {foundBooks, updateShelf} = this.props;
+    const {foundBooks, updateShelf, bookShelfBooks} = this.props;
 
     const foundBooksHasError = foundBooks.hasOwnProperty('error') ? true : false;
     const foundBooksIsEmpty = foundBooks.length === 0 ? true : false;
@@ -44,9 +48,26 @@ class SearchBooks extends Component {
       </li>
     ))
 
+    const foundBookIsOnBookShelf = book => {
+      let result = bookShelfBooks.find(bookShelfBook => bookShelfBook.id === book.id);
+      let output = result === undefined ? false : result.shelf;
+      return output;
+    }
+
     const noBooksFound = (<li>No books found. Please try again</li>);
 
-    let displayBooks = !booksUnavailableForDisplay ? booksFound(foundBooks) : noBooksFound;
+    const displayBooksMakeReady = () => {
+      let updatedFoundBooks = [];
+      foundBooks.forEach(book => {
+        const updatedBook = book;
+        updatedBook.shelf = foundBookIsOnBookShelf(book) || "none";
+        updatedFoundBooks.push(updatedBook);
+      })
+      return booksFound(updatedFoundBooks);
+    }
+
+    
+    let displayBooks = !booksUnavailableForDisplay ? displayBooksMakeReady() : noBooksFound;
 
     return (
       <div className="search-books">

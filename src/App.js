@@ -77,6 +77,7 @@ class App extends Component {
             findBooks={this.handleFindBooks} 
             foundBooks={this.state.foundBooks} 
             updateShelf={this.handleUpdateShelf}
+            bookShelfBooks={this.state.bookShelfBooks}
           />
         )}/>
       </div>
