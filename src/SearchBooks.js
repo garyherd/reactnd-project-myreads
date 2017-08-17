@@ -13,21 +13,11 @@ class SearchBooks extends Component {
 
   state = {
     query: '',
-    foundBooks: []
+    foundBooks: [],
+    errorMsg: "Enter first three letters"
   };
 
   updateQuery = query => {
-    if (query) {
-      // using alternate version of setState to fire the findBooks prop when state changes.
-      this.setState(
-        (previous, props) => ({ query: query.trim() }), 
-        () => this.props.findBooks(this.state.query))
-    } else {
-      this.setState({query: ''});
-    }
-  }
-
-  updateQuery2 = query => {
     if (query) {
       // using alternate version of setState to fire the findBooks prop when state changes.
       this.setState(
@@ -39,22 +29,23 @@ class SearchBooks extends Component {
   }
 
   // Search for books based on text input
-  findBooks = query => BooksAPI.search(query, 20)
-      .then(vals => this.setState({foundBooks: vals}));
+  findBooks = query => {
+    
+    // a simple throttle - don't use search API method until query is at least chars long
+    // the shortest search string in the search terms was three letters.
+    if (query.length >= 3) {
+      BooksAPI.search(query, 20)
+      .then(vals => this.setState({foundBooks: vals, errorMsg: 'Response object returned'}));    
+    } else {
+      this.setState({foundBooks: [], errorMsg: "Enter at least three letters"});
+    }
+  }
 
   render() {
 
     const {updateShelf, bookShelfBooks} = this.props;
 
-    const foundBooks = this.state.foundBooks;
-
-    const foundBooksHasError = foundBooks.hasOwnProperty('error') ? true : false;
-    const foundBooksIsEmpty = foundBooks.length === 0 ? true : false;
-    let queryIsEmptyStr = this.state.query === "" ? true : false;
-
-    // covers if response object has an error key, meaning no found books; or foundsBooks prop is empty; 
-    // or the input field is blank
-    const booksUnavailableForDisplay = foundBooksHasError || foundBooksIsEmpty || queryIsEmptyStr;
+    const {foundBooks, errorMsg} = this.state;
 
     const booksFound = books => books.map((book) => (
       <li key={book.id}>
@@ -68,7 +59,26 @@ class SearchBooks extends Component {
       return output;
     }
 
-    const noBooksFound = (<li>No books found. Please try again</li>);
+    const displayMessage = () => {
+      let msg = "";
+      const noBooksFound = foundBooks.hasOwnProperty('error');
+      const booksFound = !foundBooks.hasOwnProperty('error') && foundBooks.length > 0;
+      const queryIsTooShort = this.state.query.length < 3 || foundBooks === [];
+
+      if (noBooksFound) {
+        msg = "No books found. Please try again";
+      }
+
+      if (queryIsTooShort) {
+        msg = errorMsg;
+      }
+
+      if (booksFound) {
+        msg = "Books found";
+      }
+
+      return msg;
+    }
 
     const displayBooksMakeReady = () => {
       let updatedFoundBooks = [];
@@ -80,9 +90,9 @@ class SearchBooks extends Component {
       return booksFound(updatedFoundBooks);
     }
 
-    
-    let displayBooks = !booksUnavailableForDisplay ? displayBooksMakeReady() : noBooksFound;
-
+  
+    let displayBooks = displayMessage() === 'Books found' ? displayBooksMakeReady() : (<li>{displayMessage()}</li>);
+ 
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -100,7 +110,7 @@ class SearchBooks extends Component {
               type="text"
               placeholder="Search by title or author"
               value={this.state.query}
-              onChange={event => this.updateQuery2(event.target.value)}
+              onChange={event => this.updateQuery(event.target.value)}
             />
 
           </div>
