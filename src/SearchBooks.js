@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Book from './Book';
+import * as BooksAPI from './BooksAPI';
 
 class SearchBooks extends Component {
 
   static PropTypes = {
-    findBooks: PropTypes.func.isRequired
+    updateShelf: PropTypes.func.isRequired
   };
 
   state = {
     query: '',
+    foundBooks: []
   };
 
   updateQuery = query => {
@@ -25,14 +27,26 @@ class SearchBooks extends Component {
     }
   }
 
-  updateFoundBooksWithShelfStatus = () => {
-
+  updateQuery2 = query => {
+    if (query) {
+      // using alternate version of setState to fire the findBooks prop when state changes.
+      this.setState(
+        (previous, props) => ({ query: query.trim() }), 
+        () => this.findBooks(this.state.query))
+    } else {
+      this.setState({query: ''});
+    }
   }
 
+  // Search for books based on text input
+  findBooks = query => BooksAPI.search(query, 20)
+      .then(vals => this.setState({foundBooks: vals}));
 
   render() {
 
-    const {foundBooks, updateShelf, bookShelfBooks} = this.props;
+    const {updateShelf, bookShelfBooks} = this.props;
+
+    const foundBooks = this.state.foundBooks;
 
     const foundBooksHasError = foundBooks.hasOwnProperty('error') ? true : false;
     const foundBooksIsEmpty = foundBooks.length === 0 ? true : false;
@@ -86,7 +100,7 @@ class SearchBooks extends Component {
               type="text"
               placeholder="Search by title or author"
               value={this.state.query}
-              onChange={event => this.updateQuery(event.target.value)}
+              onChange={event => this.updateQuery2(event.target.value)}
             />
 
           </div>

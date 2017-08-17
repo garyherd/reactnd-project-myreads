@@ -40,12 +40,6 @@ class App extends Component {
       .then(vals => this.setState({bookShelfBooks: vals}));
   }
 
-  // Search for books based on text input
-  handleFindBooks = query => {
-    BooksAPI.search(query, 50)
-      .then(vals => this.setState({foundBooks: vals}))
-  }
-
   render() {
 
     let currentlyReading = this.state.bookShelfBooks.filter(book => book.shelf === "currentlyReading");
@@ -74,8 +68,6 @@ class App extends Component {
 
         <Route exact path="/search" render={() => (
           <SearchBooks 
-            findBooks={this.handleFindBooks} 
-            foundBooks={this.state.foundBooks} 
             updateShelf={this.handleUpdateShelf}
             bookShelfBooks={this.state.bookShelfBooks}
           />
