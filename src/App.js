@@ -17,7 +17,6 @@ class App extends Component {
 */
   state = {
     bookShelfBooks: [],
-    foundBooks: []
   };
 
   // Load all books on the bookshelf after App component mounts.
@@ -25,7 +24,6 @@ class App extends Component {
     BooksAPI.getAll().then(vals => {
       this.setState({bookShelfBooks: vals});
     });
-    this.setState({foundBooks: []});
   }
 
   /* All calls to, and responses from, the BooksAPI are handled in
@@ -42,9 +40,13 @@ class App extends Component {
 
   render() {
 
-    let currentlyReading = this.state.bookShelfBooks.filter(book => book.shelf === "currentlyReading");
-    let read = this.state.bookShelfBooks.filter(book => book.shelf === "read");
-    let wantToRead = this.state.bookShelfBooks.filter(book => book.shelf === "wantToRead");
+    const filterBooksByShelf = shelf => {
+      return this.state.bookShelfBooks.filter(book => book.shelf === shelf);
+    }
+
+    let currentlyReading = filterBooksByShelf("currentlyReading");
+    let read = filterBooksByShelf("read");
+    let wantToRead = filterBooksByShelf("wantToRead");
 
     return (
       <div className="app">

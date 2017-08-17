@@ -5,7 +5,12 @@ class Book extends Component {
 
   static propTypes = {
     updateShelf: PropTypes.func.isRequired,
-    bookData: PropTypes.object.isRequired
+    //bookData: PropTypes.object.isRequired
+    bookData: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      authors: PropTypes.array.isRequired,
+      imageLinks: PropTypes.object.isRequired
+    })
   };
 
   handleOnChange = (event) => this.props.updateShelf(this.props.bookData, event.target.value);
