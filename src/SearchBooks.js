@@ -8,7 +8,8 @@ import * as BooksAPI from './BooksAPI';
 class SearchBooks extends Component {
 
   static PropTypes = {
-    updateShelf: PropTypes.func.isRequired
+    updateShelf: PropTypes.func.isRequired,
+    bookShelfBooks: PropTypes.array.isRequired
   };
 
   state = {
