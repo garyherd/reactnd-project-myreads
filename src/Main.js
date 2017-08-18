@@ -1,14 +1,23 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import { Route } from 'react-router-dom';
+// import { Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
-import * as BooksAPI from './BooksAPI';
+// import * as BooksAPI from './BooksAPI';
+import PropTypes from 'prop-types';
 
 import Shelf from './Shelf';
-import SearchBooks from './SearchBooks';
+// import SearchBooks from './SearchBooks';
 
 const Main = props => {
+
+  const filterBooksByShelf = shelf => {
+    return props.bookShelfBooks.filter(book => book.shelf === shelf);
+  }
+
+  let currentlyReading = filterBooksByShelf("currentlyReading");
+  let read = filterBooksByShelf("read");
+  let wantToRead = filterBooksByShelf("wantToRead");
 
 
   return (
@@ -18,9 +27,9 @@ const Main = props => {
       </div>
       <div className="list-books-content">
         <div>
-          <Shelf books={currentlyReading} title="Currently Reading" updateShelf={props.handleUpdateShelf} />
-          <Shelf books={wantToRead} title="Want to Read" updateShelf={props.handleUpdateShelf} />
-          <Shelf books={read} title="Read" updateShelf={props.handleUpdateShelf} />
+          <Shelf books={currentlyReading} title="Currently Reading" updateShelf={props.updateShelf} />
+          <Shelf books={wantToRead} title="Want to Read" updateShelf={props.updateShelf} />
+          <Shelf books={read} title="Read" updateShelf={props.updateShelf} />
         </div>
       </div>
       <div className="open-search">
@@ -29,3 +38,10 @@ const Main = props => {
     </div>
   )
 }
+
+Main.propTypes = {
+  updateShelf: PropTypes.func.isRequired,
+  bookShelfBooks: PropTypes.array
+}
+
+export default Main;

@@ -8,7 +8,7 @@ class Book extends Component {
     //bookData: PropTypes.object.isRequired
     bookData: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      authors: PropTypes.array.isRequired,
+      authors: PropTypes.array,
       imageLinks: PropTypes.object.isRequired
     })
   };

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 
 import { Route } from 'react-router-dom';
-import  { Link } from 'react-router-dom';
+// import  { Link } from 'react-router-dom';
 
 import * as BooksAPI from './BooksAPI';
 
 import './App.css';
-import Shelf from './Shelf';
+// import Shelf from './Shelf';
 import SearchBooks from './SearchBooks';
+import Main from './Main';
 
 class App extends Component {
 /* Using the Babel transform-class-properties plugin,
@@ -40,32 +41,21 @@ class App extends Component {
 
   render() {
 
-    const filterBooksByShelf = shelf => {
-      return this.state.bookShelfBooks.filter(book => book.shelf === shelf);
-    }
+    // const filterBooksByShelf = shelf => {
+    //   return this.state.bookShelfBooks.filter(book => book.shelf === shelf);
+    // }
 
-    let currentlyReading = filterBooksByShelf("currentlyReading");
-    let read = filterBooksByShelf("read");
-    let wantToRead = filterBooksByShelf("wantToRead");
+    // let currentlyReading = filterBooksByShelf("currentlyReading");
+    // let read = filterBooksByShelf("read");
+    // let wantToRead = filterBooksByShelf("wantToRead");
 
     return (
       <div className="app">
         <Route exact path="/" render={() => (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                <Shelf books={currentlyReading} title="Currently Reading" updateShelf={this.handleUpdateShelf}/>
-                <Shelf books={wantToRead} title="Want to Read" updateShelf={this.handleUpdateShelf}/>
-                <Shelf books={read} title="Read" updateShelf={this.handleUpdateShelf}/>
-              </div>
-            </div>
-            <div className="open-search">
-              <Link to="/search">Add a book</Link>
-            </div>
-          </div>
+          <Main
+            updateShelf={this.handleUpdateShelf}
+            bookShelfBooks={this.state.bookShelfBooks}
+          />
         )}/>
 
         <Route exact path="/search" render={() => (
