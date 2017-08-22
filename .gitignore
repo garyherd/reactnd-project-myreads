@@ -3,4 +3,4 @@ yarn.lock
 .DS_Store
 *.log
 postcss*
-build/
+build
